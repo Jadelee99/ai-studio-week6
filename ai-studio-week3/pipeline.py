@@ -10,3 +10,8 @@ df["주문일자"]=pd.to_datetime(df["주문일자"])
 df["월"]=df["주문일자"].dt.month
 print("[Step 2] 데이터 정제 및 파생 열 생성 완료")
 print(df[["주문일자","월","상품명","단가","수량","매출액"]].head())
+monthly_category_summary=(df.groupby(["월","카테고리"])["매출액"].agg(총매출="sum",평균매출="mean",거래건수="count").reset_index())
+category_summary=(df.groupby("카테고리")["매출액"].sum().reset_index(name="총매출").sort_values(by="총매출",ascending=False))
+print("[step 3] 집계완료")
+print("월별 카테고리 요약 상위 5행")
+print(monthly_category_summary.head())
