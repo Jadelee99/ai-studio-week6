@@ -15,3 +15,10 @@ category_summary=(df.groupby("카테고리")["매출액"].sum().reset_index(name
 print("[step 3] 집계완료")
 print("월별 카테고리 요약 상위 5행")
 print(monthly_category_summary.head())
+assert df["매출액"].sum()==monthly_category_summary["총매출"].sum(),("오류: 원본 매출액 총합과 집계표 총매출 합이 일치하지 않습니다.")
+print("[step 4] 정합성 검증 통과")
+output_path="Monthly_Report.xlsx"
+with pd.ExcelWriter(output_path, engine="openpyxl")as writer:
+    monthly_category_summary.to_excel(writer,sheet_name="월별카테고리요약",index=False)
+    category_summary.to_excel(writer,sheet_name="카테고리별합계",index=False)
+print(f"'{output_path}' 저장 완료")
